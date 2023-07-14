@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "JSON schema for DEVPM devpackage.json files",
+  "definitions": {
+    "dependency": {
+      "description": "Dependencies are specified with a simple hash of package name to version range. The version range is a string which has one or more space-separated descriptors. Dependencies can also be identified with a tarball or git URL.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "vscodeDependencies": {
+      "$ref": "#/definitions/dependency"
+    },
+    "pythonDependencies": {
+      "$ref": "#/definitions/dependency"
+    }
+  }
+}
