@@ -22,4 +22,4 @@ classifiers = [
 "Bug Tracker" = "https://github.com/wequick/devpm/issues"
 
 [project.scripts]
-devpm = "devpm.__main__:main"
+devpm = "devpm._internal.cli.main:main"
