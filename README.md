@@ -1,2 +1,2 @@
-# upm
-U=your package manager
+# devpm
+Development package manager
