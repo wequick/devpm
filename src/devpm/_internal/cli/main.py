@@ -28,10 +28,11 @@ def create_argument_parser():
 
 
 def version():
-  if __package__ == 'devpm':
+  try:
     import pkg_resources
-    return pkg_resources.get_distribution(__package__).version
-  return ''
+    return pkg_resources.get_distribution('devpm').version
+  except Exception as e:
+    return ''
 
 
 def main(args = None):
