@@ -69,23 +69,16 @@ class InstallCommand(Command):
                 context.log.h1('Checking executable [%s]' % key)
                 installed_path = context.bash.check_install(key, dep)
                 if not installed_path:
-                    context.log.abort('安装失败，请手动安装 `%s`' % (key, dep))
+                    context.log.abort('Failed to install %s, try by yourself: `%s`' % (key, dep))
                 sys.stdout.write(installed_path + '\n')
         # git hooks
         if len(git_hooks) > 0:
-            pwd = os.path.abspath(os.path.dirname(__file__))
-            project_root = os.path.abspath(os.path.join(pwd, '..'))
-            user_scaffold_path = os.path.join(project_root, 'user_scaffold')
-            if not os.path.exists(user_scaffold_path):
-                os.makedirs(user_scaffold_path)
+            project_root = os.getcwd()
             git_path = context.git.git_path(project_root)
             if not git_path:
-                context.log.abort('.git not found.')
+                context.log.warn('.git not found.')
             for hook_name in git_hooks:
                 context.log.h1('Checking git hooks [%s]' % hook_name)
-                hook_script = context.evaluate(git_hooks[hook_name], project_root)
-                if hook_script:
-                    context.git.append_hook(
-                        git_path, hook_name, hook_script, '.', True)
+                context.git.append_hook(project_root, git_path, hook_name, git_hooks[hook_name], True)
 
         context.log.info('Done. You may need to restart console windows.')
