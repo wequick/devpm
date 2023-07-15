@@ -1,0 +1,63 @@
+{
+  "$schema": "devpackage.schema.json",
+  "vscodeDependencies": {
+    "ms-vscode.cpptools-extension-pack": "",
+    "wequick.cpp-creator": "",
+    "wequick.coverage-gutters": "",
+    "mine.cpplint": ""
+  },
+  "vscodeUserSettings": {
+    "cpplint.cpplintPath": "$pip.which:cpplint",
+    "cmake.cmakePath": "$bash.which:cmake"
+  },
+  "pythonDependencies": {
+    "gcovr": "4.2",
+    "cpplint": "1.6.1",
+    "pre-commit": "3.3.3"
+  },
+  "bashDependencies": {
+    "OpenCppCoverage": {
+      "win32": "https://github.com/OpenCppCoverage/OpenCppCoverage/releases/download/release-0.9.9.0/OpenCppCoverageSetup-x64-0.9.9.0.exe"
+    },
+    "cppcheck": {
+      "win32": "https://github.com/danmar/cppcheck/releases/download/2.11/cppcheck-2.11-x64-Setup.msi",
+      "linux": "apt-get install cppcheck",
+      "darwin": "brew install cppcheck"
+    }
+  },
+  "gitHooks": {
+    "commit-msg": {
+      "type": "regexp",
+      "pattern": "[feat|fix|refactor|chore|test|style|docs](.+)[fix|to]\\s+#\\d+",
+      "tips": [
+        "提交不符合规范, 要求带修复类型与AOne ID, 格式如下：",
+        "  fix: some msg. fix #123",
+        "  ^^^^                       提交类型: feat|fix|refactor|chore|test|style|docs, 带:",
+        "       ^^^^^^^^^             提交内容，说清楚为佳，不要求英文",
+        "                 ^^^         AOne关联类型: fix|to",
+        "                     ^^^^    AOneID, 带#",
+        "提交类型：",
+        "  feat     : 业务相关功能，影响到用户，注意工具/单测不在此列",
+        "  fix      : 业务相关修复，影响到用户，注意工具/单测不在此列",
+        "  refactor : 重构业务代码，影响到用户，注意工具/单测不在此列",
+        "  chore    : 工具功能/修复/重构，不影响生产代码",
+        "  test     : 单测功能/修复/重构，不影响生产代码",
+        "  style    : 格式化/拼写错误修正等，不影响生产代码",
+        "  docs     : 文档，不影响生产代码"
+      ]
+    },
+    "pre-commit": {
+      "type": "pre-commit",
+      "repos": [
+        {
+          "repo": "https://github.com/pocc/pre-commit-hooks",
+          "rev": "v1.3.5",
+          "hooks": [
+            { "id": "cpplint" },
+            { "id": "cppcheck" }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -13,6 +13,5 @@ Development package manager
 ## Develop
 
 ```bash
-$ cd example
-$ python ../src/devpm/__main__.py install
+$ python src/devpm/__main__.py install
 ```
