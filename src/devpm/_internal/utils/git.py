@@ -146,17 +146,17 @@ class Git:
     if not os.path.exists(root_path):
       return
     yield root_path, False
-    git_path = self.git_path(root_path)
-    if git_path:
-      submodules_path = os.path.join(git_path, 'modules')
-      if list_submodules and os.path.exists(submodules_path):
-        for rel_f in os.listdir(submodules_path):
-          abs_f = os.path.join(root_path, rel_f)
-          if os.path.isdir(abs_f):
-            yield abs_f, True
+    try:
+      output = subprocess.check_output(['git', 'submodule']).decode('utf-8')
+      for line in output.splitlines():
+        arr = line.strip().split(' ')
+        if len(arr) > 1:
+          yield os.path.join(root_path, arr[1]), True
+    except:
+      return
 
   def install_pre_commit(self, hook, cwd):
-    # 配置文件初始化
+    # Create config yaml from user hook config.
     import yaml
     name = '.pre-commit-config.yaml'
     target_pre_commit_config = os.path.join(cwd, name)
@@ -203,23 +203,27 @@ class Git:
       print('update %s' % (name))
       with open(target_pre_commit_config, 'w', encoding='utf-8') as f:
         f.write(new_file_content)
-    # 遍历所有子模块，执行 pre-commit instal
     for module_path, is_sumbodule in self.list_root_path(cwd):
       try:
+        # Exec `pre-commit install` for submodules
         subprocess.check_call(['pre-commit', 'install'], cwd=module_path)
         if is_sumbodule:
-          # 子模块需要更新 .pre-commit-config.yaml -> ../.pre-commit-config.yaml
+          # Redirect .pre-commit-config.yaml path for submodules
           module_git_path = self.git_path(module_path)
           if module_git_path:
+            redirected = False
             pre_commit_file = os.path.join(module_git_path, 'hooks', 'pre-commit')
             if os.path.exists(pre_commit_file):
-              print('  - fix .pre-commit-config.yaml path for submodule [%s]' % os.path.relpath(module_path, cwd))
               s = ''
               with open(pre_commit_file, 'r', encoding='utf-8') as f:
                 s = f.read()
-              s = s.replace('.pre-commit-config.yaml', '../.pre-commit-config.yaml')
+              rel_path = os.path.relpath(cwd, module_path).replace('\\', '/')
+              s = s.replace(name, rel_path + '/' + name)
               with open(pre_commit_file, 'w', encoding='utf-8') as f:
                 f.write(s)
+                redirected = True
+            if not redirected:
+              print('  - Failed to config %s' % name)
       except:
         pass
     return None
