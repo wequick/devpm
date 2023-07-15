@@ -23,7 +23,7 @@ class InstallCommand(Command):
             sys.exit(1)
         sys.stdout.write('Install from %s\n' % config_file)
         config = {}
-        with open(config_file, 'r') as f:
+        with open(config_file, 'r', encoding='utf-8') as f:
             config = json.load(f)
         
         context = Context()
