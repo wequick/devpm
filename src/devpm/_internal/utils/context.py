@@ -26,15 +26,15 @@ class Context:
   def init(self):
     self.log.h1('Checking executable [code]')
     if not self.code.init():
-      self.log.abort('请先安装 VSCode 并设置环境变量。参考 https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line')
+      self.log.abort('VSCode required. see https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line')
 
     self.log.h1('Checking executable [pip]')
     if not self.pip.init():
-      self.log.abort('请先安装 python3 以上版本。参考 https://www.python.org/downloads/')
+      self.log.abort('python3 required. see https://www.python.org/downloads/')
 
     self.log.h1('Checking executable [git]')
     if not self.git.init():
-      self.log.abort('请先安装 git 并设置环境变量。参考 https://git-scm.com/downloads')
+      self.log.abort('git required. see https://git-scm.com/downloads')
 
   def check_install_exe(self, exe, url):
     installed_ver = None
