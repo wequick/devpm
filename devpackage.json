@@ -28,22 +28,23 @@
   "gitHooks": {
     "commit-msg": {
       "type": "regexp",
-      "pattern": "[feat|fix|refactor|chore|test|style|docs](.+)[fix|to]\\s+#\\d+",
+      "pattern": "^[feat|fix|refactor|chore|test|style|docs]",
       "tips": [
-        "提交不符合规范, 要求带修复类型与AOne ID, 格式如下：",
-        "  fix: some msg. fix #123",
-        "  ^^^^                       提交类型: feat|fix|refactor|chore|test|style|docs, 带:",
-        "       ^^^^^^^^^             提交内容，说清楚为佳，不要求英文",
-        "                 ^^^         AOne关联类型: fix|to",
-        "                     ^^^^    AOneID, 带#",
-        "提交类型：",
-        "  feat     : 业务相关功能，影响到用户，注意工具/单测不在此列",
-        "  fix      : 业务相关修复，影响到用户，注意工具/单测不在此列",
-        "  refactor : 重构业务代码，影响到用户，注意工具/单测不在此列",
-        "  chore    : 工具功能/修复/重构，不影响生产代码",
-        "  test     : 单测功能/修复/重构，不影响生产代码",
-        "  style    : 格式化/拼写错误修正等，不影响生产代码",
-        "  docs     : 文档，不影响生产代码"
+        "Invalid commit message style, please format as following:",
+        "  fix: some msg",
+        "  ^^^^              Type: feat|fix|refactor|chore|test|style|docs",
+        "       ^^^^^^^^     Summary in present tense",
+        "Type:",
+        "  feat     : new feature for the user, not a new feature for build script",
+        "  fix      : bug fix for the user, not a fix to a build script",
+        "  docs     : changes to the documentation",
+        "  style    : formatting, missing semi colons, etc; no production code change",
+        "  refactor : refactoring production code, eg. renaming a variable",
+        "  test     : adding missing tests, refactoring tests; no production code change",
+        "  chore    : updating grunt tasks etc; no production code change",
+        "",
+        "See <https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716> for more details.",
+        ""
       ]
     },
     "pre-commit": {
