@@ -1,5 +1,9 @@
-# 1.0.0 (2023-07-15)
+# 1.0.1 (2023-07-16)
+## feat
+* git hooks support submodules and compat for windows
 
+
+# 1.0.0 (2023-07-15)
 ## feat
 * devpm install - Install packages by devpackage.json in current directory which support config:
   - vscodeDependencies for vscode extensions
