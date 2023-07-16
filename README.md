@@ -20,34 +20,34 @@ Version definition:
 * "latest"            - uninstall and install latest
 * "1.0.0" (specified) - install when version mismatched
 
-## pythonDependencies
+### pythonDependencies
 Packages installed by pip.
 Key for pip name, value for `version`, ses (1).
 
-## bashDependencies
+### bashDependencies
 Packages installed by custom bash script.
 Key for excutable name after installed, value is an object describes script in platforms.
 The platform is from python `sys.platform`, include 'darwin', 'win32' and 'linux'.
 
-## vscodeUserSettings
+### vscodeUserSettings
 Write to visual studio code user settings <https://code.visualstudio.com/docs/getstarted/settings#_settings-file-locations>.
 Key and value format same to the user settings.
 In addition, the value support `devpm expression`:
 * `$bash.which:[bin]` - returns the bin path in system by `which [bin]`
 * `$pip.which:[bin]` - returns the bin path in pip by `pip show [bin]`
 
-## gitHooks
+### gitHooks
 Write to git hooks for root project and it's git submodules. Support commit-msg, pre-commit.
-### commit-msg
+#### commit-msg
 `type` (string) now is always `regexp`, for custom regexp match.
 `pattern` (string) for the regexp pattern.
 `tips` (array) used to show tips when the `commit-msg` mismatched, each item for one line.
 
-### pre-commit
+#### pre-commit
 `type` (string) now is always `pre-commit`, use the`pre-commit` plugin <https://pre-commit.com/>.
 `repos` (array) content is same to '.pre-commit-config.yaml' but in json format.
 
-Example
+### Example
 
 ```json
 {
