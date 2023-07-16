@@ -2,8 +2,22 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "JSON schema for NPM package.json files",
   "definitions": {
-    "dependency": {
-      "description": "Dependencies are specified with a simple hash of package name to version range. The version range is a string which has one or more space-separated descriptors. Dependencies can also be identified with a tarball or git URL.",
+    "vscodeDependency": {
+      "description": "Packages installed by visutal studio code. Key for vscode extension id, value for version. Version definitions: ''(empty) - install when not exists; 'latest' - uninstall and install latest, '1.0.0'(specified) - install when version mismatched.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "pythonDependency": {
+      "description": "Packages installed by pip. Key for pip name, value for version. Version definitions: ''(empty) - install when not exists; 'latest' - uninstall and install latest, '1.0.0'(specified) - install when version mismatched.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "vscodeSettings": {
+      "description": "Write to visual studio code user settings <https://code.visualstudio.com/docs/getstarted/settings#_settings-file-locations>. Key and value format same to the user settings. In addition, the value support `devpm expression`: `$bash.which:[bin]` - returns the bin path in system by `which [bin]`; `$pip.which:[bin]` - returns the bin path in pip by `pip show [bin]`",
       "type": "object",
       "additionalProperties": {
         "type": "string"
@@ -11,32 +25,26 @@
     },
     "osDependency": {
       "type": "object",
-      "description": "Used to specify dependency in different os.",
+      "description": "Packages installed by custom bash script. Key for excutable name after installed, value is an object describes script in platforms. The platform is from python `sys.platform`, include 'darwin', 'win32' and 'linux'.",
       "patternProperties": {
         ".+": {
           "type": "object",
           "properties": {
             "win32": {
               "type": "string",
-              "description": "The dependency in win32, specified with a simple hash of package name to version range. The version range is a string which has one or more space-separated descriptors. Dependencies can also be identified with a tarball or git URL."
+              "description": "The dependency in win32, specified with a bash script or file URL."
             },
             "linux": {
               "type": "string",
-              "description": "The dependency in linux, specified with a simple hash of package name to version range. The version range is a string which has one or more space-separated descriptors. Dependencies can also be identified with a tarball or git URL."
+              "description": "The dependency in linux, specified with a bash script or file URL."
             },
             "darwin": {
               "type": "string",
-              "description": "The dependency in darwin, specified with a simple hash of package name to version range. The version range is a string which has one or more space-separated descriptors. Dependencies can also be identified with a tarball or git URL."
+              "description": "The dependency in darwin, specified with a bash script or file URL."
             }
           },
           "additionalProperties": false
         }
-      }
-    },
-    "vscodeUserSettingsItem": {
-      "type": "object",
-      "properties": {
-        
       }
     },
     "preCommitRepo": {
@@ -70,7 +78,7 @@
       "additionalProperties": false
     },
     "gitHook": {
-      "description": "The git hooks, support commit-msg, pre-commit",
+      "description": "Write to git hooks for root project and it's git submodules. Support commit-msg, pre-commit",
       "type": "object",
       "properties": {
         "commit-msg": {
@@ -117,16 +125,16 @@
   "type": "object",
   "properties": {
     "vscodeDependencies": {
-      "$ref": "#/definitions/dependency"
+      "$ref": "#/definitions/vscodeDependency"
     },
     "pythonDependencies": {
-      "$ref": "#/definitions/dependency"
+      "$ref": "#/definitions/pythonDependency"
     },
     "bashDependencies": {
       "$ref": "#/definitions/osDependency"
     },
     "vscodeUserSettings": {
-      "$ref": "#/definitions/dependency"
+      "$ref": "#/definitions/vscodeSettings"
     },
     "gitHooks": {
       "$ref": "#/definitions/gitHook"

@@ -16,9 +16,9 @@ Development package manager
 Packages installed by visutal studio code.
 Key for vscode extension id, value for `version` (1).
 Version definition: 
-* "" (empty)          - install when not exists only
+* "" (empty)          - install when not exists
 * "latest"            - uninstall and install latest
-* "1.0.0" (specified) - install when version changed
+* "1.0.0" (specified) - install when version mismatched
 
 ## pythonDependencies
 Packages installed by pip.
@@ -26,18 +26,18 @@ Key for pip name, value for `version`, ses (1).
 
 ## bashDependencies
 Packages installed by custom bash script.
-Key for excutable name after installed, value is object describes script in platforms.
+Key for excutable name after installed, value is an object describes script in platforms.
 The platform is from python `sys.platform`, include 'darwin', 'win32' and 'linux'.
 
 ## vscodeUserSettings
 Write to visual studio code user settings <https://code.visualstudio.com/docs/getstarted/settings#_settings-file-locations>.
-Key and value format same to user settings.
+Key and value format same to the user settings.
 In addition, the value support `devpm expression`:
 * `$bash.which:[bin]` - returns the bin path in system by `which [bin]`
 * `$pip.which:[bin]` - returns the bin path in pip by `pip show [bin]`
 
 ## gitHooks
-Write to git hooks for root project and it's git submodules.
+Write to git hooks for root project and it's git submodules. Support commit-msg, pre-commit.
 ### commit-msg
 `type` (string) now is always `regexp`, for custom regexp match.
 `pattern` (string) for the regexp pattern.
