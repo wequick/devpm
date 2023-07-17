@@ -1,5 +1,5 @@
 {
-  "$schema": "devpackage.schema.json",
+  "$schema": "https://raw.githubusercontent.com/wequick/devpm/main/devpackage.schema.json",
   "vscodeDependencies": {
     "ms-vscode.cpptools-extension-pack": "",
     "wequick.cpp-creator": "",
@@ -55,7 +55,15 @@
           "rev": "v1.3.5",
           "hooks": [
             { "id": "cpplint" },
-            { "id": "cppcheck" }
+            {
+              "id": "cppcheck",
+              "args": [
+                "--suppress=missingInclude",
+                "--suppress=missingIncludeSystem",
+                "--std=c++14",
+                "--force"
+              ]
+            }
           ]
         }
       ]
