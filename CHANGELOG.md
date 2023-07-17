@@ -1,3 +1,10 @@
+# 1.0.2 (2023-07-17)
+## fix
+* copy hook args for pre-commit-config.yaml
+## docs
+* update README and schema
+* udpate devpackage.json, add example for cppcheck args
+
 # 1.0.1 (2023-07-16)
 ## feat
 * git hooks support submodules and compat for windows
