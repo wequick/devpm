@@ -200,16 +200,18 @@ fi
             else:
               for cfg_hook in cfg_repo['hooks']:
                 id = cfg_hook['id']
-                found = False
+                found = None
                 for hook in repo['hooks']:
                   if id == hook['id']:
                     found = True
+                    for key in cfg_hook:
+                      hook[key] = cfg_hook[key]
                     break
                 if not found:
                   repo['hooks'].append(cfg_hook)
           if not has_repo:
             data['repos'].append(cfg_repo)
-      new_file_content = yaml.dump(data)
+      new_file_content = yaml.dump(data, sort_keys=False)
       if file_content == new_file_content:
         new_file_content = None
     if new_file_content:
