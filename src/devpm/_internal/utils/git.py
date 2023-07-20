@@ -132,8 +132,8 @@ fi
       self.append_hook_script_sub(hook_enabled, module.host_root_path, hook_path, name, module.rel_path + '/' + script_file)
 
   def append_hook_script_sub(self, hook_enabled, host, hook_path, name, bin):
-    scaffold_exec = 'SCFEXE=exec;$SCFEXE'
-    script = '%s %s $1' % (scaffold_exec, bin)
+    exec = 'DEVPME=exec;$DEVPME'
+    script = '%s %s $1' % (exec, bin)
     if os.path.exists(hook_path):
       hook_file = os.path.join(hook_path, name)
       new_file_content = None
@@ -145,7 +145,7 @@ fi
           needs_update = False
           file_content = ''
           for line in f.readlines():
-            index = line.find(scaffold_exec)
+            index = line.find(exec)
             if index < 0:
               file_content += line
             else:
