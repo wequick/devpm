@@ -9,46 +9,39 @@
 
 import os
 import sys
-import subprocess
+from devpm._internal.utils.bin import Bin
 
 
-class Pip:
+class Pip(Bin):
   def __init__(self):
-    self.bin = None
+    super().__init__()
+    self.name = 'pip'
+    self.help_url = 'https://www.python.org/downloads/'
     self.shell = sys.platform == 'win32'
-  
-  def init(self):
-    try:
-      output = subprocess.check_output(['pip', '--version']).decode('utf-8')
-      if 'python 2' in output:
-        return False
-      print(output.strip())
-      self.bin = 'pip'
-      return True
-    except:
-      return False
 
+  def verify_version(self, v) -> str | None:
+    if 'python 2' in v:
+      return 'requires v3+'
+  
   def install(self, lib, ver):
-    args = [self.bin, 'install']
+    args = ['install']
     if ver:
       args.append('-v')
       args.append('%s==%s' % (lib, ver))
     else:
       args.append(lib)
-    subprocess.call(args, shell=self.shell)
+    self.call(args)
 
   def show(self, lib):
     info = {}
-    args = [self.bin, 'show', lib]
-    try:
-      output = subprocess.check_output(args).decode('utf-8')
+    args = ['show', lib]
+    output = self.run(args)
+    if output:
       for line in output.splitlines():
         token = ': '
         index = line.find(token)
         if index > 0:
           info[line[:index]] = line[index+len(token):]
-    except:
-      pass
     return info
 
   def check_install(self, lib, ver):

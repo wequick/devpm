@@ -26,9 +26,7 @@ class InstallCommand(Command):
         with open(config_file, 'r', encoding='utf-8') as f:
             config = json.load(f)
         
-        context = Context()
-        context.init()
-
+        context = self.context
         vscode_dependencies = config['vscodeDependencies']
         python_dependencies = config['pythonDependencies']
         bash_dependencies = config['bashDependencies']

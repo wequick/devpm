@@ -7,8 +7,11 @@
 
 # Base command
 
+from devpm._internal.utils.context import Context
+
 class Command:
-  def __init__(self, name, summary):
+  def __init__(self, context: Context, name: str, summary: str):
+    self.context = context
     self.name = name
     self.summary = summary
 

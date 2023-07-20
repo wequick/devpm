@@ -12,6 +12,7 @@ from collections import namedtuple
 from typing import Any, Dict, Optional
 
 from devpm._internal.cli.base_command import Command
+from devpm._internal.utils.context import Context
 
 CommandInfo = namedtuple("CommandInfo", "module_path, class_name, summary")
 
@@ -31,14 +32,14 @@ commands_dict: Dict[str, CommandInfo] = {
 }
 
 
-def create_command(name: str, **kwargs: Any) -> Command:
+def create_command(context: Context, name: str, **kwargs: Any) -> Command:
     """
     Create an instance of the Command class with the given name.
     """
     module_path, class_name, summary = commands_dict[name]
     module = importlib.import_module(module_path)
     command_class = getattr(module, class_name)
-    command = command_class(name=name, summary=summary, **kwargs)
+    command = command_class(context=context, name=name, summary=summary, **kwargs)
 
     return command
 

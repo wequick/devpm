@@ -9,76 +9,56 @@
 
 import json
 import os
-import sys
-import subprocess
 from contextlib import contextmanager
+from devpm._internal.utils.bin import Bin
 
-class Code:
+
+class Code(Bin):
   def __init__(self):
-    self.bin = None
-    self.shell = False
-    self.settings_root = None
-    self.user_settings_path = None
-
-  def init(self):
-    host_os = sys.platform
-    home = os.path.expanduser("~")
+    super().__init__()
+    self.name = 'code'
+    platform = 'mac' if 'darwin' == self.platform else self.platform
+    self.help_url = f'https://code.visualstudio.com/docs/setup/{platform}#_launching-from-the-command-line'
+    self.shell = self.platform == 'win32'
     # https://code.visualstudio.com/docs/getstarted/settings#_settings-file-locations
-    if host_os == 'win32':
+    if self.platform == 'win32':
       self.settings_root = os.getenv('APPDATA')
-    elif host_os == 'darwin':
-      self.settings_root = os.path.join(home, 'Library', 'Application Support')
+      self.search_paths = [os.path.join(self.home, 'AppData', 'Local', 'Programs', 'Microsoft VS Code', 'bin', 'code')]
+    elif self.platform == 'darwin':
+      self.settings_root = os.path.join(self.home, 'Library', 'Application Support')
+      self.search_paths = ['/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code']
     else:
-      self.settings_root = os.path.join(home, '.config')
+      self.settings_root = os.path.join(self.home, '.config')
     self.user_settings_path = os.path.join(self.settings_root, 'Code', 'User', 'settings.json')
-    self.shell = host_os == 'win32'
     if os.environ.get('NODE_OPTIONS'):
       os.environ.pop('NODE_OPTIONS')
-    try:
-      subprocess.check_call(['code', '--version'], shell=self.shell)
-      self.bin = 'code'
-    except:
-      # default path
-      default_path = None
-      if host_os == 'darwin':
-        default_path = "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
-      elif host_os == 'win32':
-        default_path = os.path.join(home, 'AppData', 'Local', 'Programs', 'Microsoft VS Code', 'bin', 'code')
-      if not default_path or not os.path.exists(default_path):
-        return False
-      self.bin = default_path
-      subprocess.check_call([self.bin, '--version'], shell=self.shell)
-    return True
 
   def install_vsix(self, path, ver):
-    args = [self.bin, '--install-extension']
+    args = ['--install-extension']
     if ver == 'latest':
       args.append('--force')
     elif ver:
       args.append(path + '@' + ver)
     else:
       args.append(path)
-    subprocess.call(args, shell=self.shell)
+    self.call(args)
 
   def check_install_vsix(self, ext, ver):
-    args = [self.bin, '--list-extensions', '--show-versions']
+    args = ['--list-extensions', '--show-versions']
     installed_ver = None
     if ver == '':
       ver = None
-    try:
-      output = subprocess.check_output(args, shell=self.shell).decode('utf-8')
+    output = self.run(args)
+    if output:
       for line in output.splitlines():
         index = line.find('@')
         if index > 0:
           if str(line[:index]).lower() == ext:
             installed_ver = str(line[index+1:])
-    except:
-      pass
-    finally:
-      if not installed_ver or (ver and installed_ver != ver):
-        self.install_vsix(ext, ver)
-      else:
-        print('Version %s installed.' % installed_ver)
+    if not installed_ver or (ver and installed_ver != ver):
+      self.install_vsix(ext, ver)
+    else:
+      print('Version %s installed.' % installed_ver)
 
   @contextmanager
   def open_user_settings(self):

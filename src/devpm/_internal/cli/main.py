@@ -44,10 +44,11 @@ def main(args = None):
         sys.stdout.write(os.linesep)
         sys.exit()
     if not options.command:
-        parser.print_help()
-        sys.exit(1)
+        options.command = 'install'
     from devpm._internal.commands import create_command
-    command = create_command(options.command)
+    from devpm._internal.utils.context import Context
+    context = Context()
+    command = create_command(context, options.command)
     command.main(args)
 
 

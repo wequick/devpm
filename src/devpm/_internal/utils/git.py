@@ -10,30 +10,17 @@ import stat
 import subprocess
 import sys
 from collections import namedtuple
+from devpm._internal.utils.bin import Bin
 
 GitModule = namedtuple('GitModule', field_names=[
   'host_root_path', 'root_path', 'git_path', 'rel_path', 'is_submodule'])
 
 # Git管理
-class Git:
-  def __init__(self):
-    self.bin = 'git'
-    self.shell = False
-    self.cwd = None
-
-  def init(self):
-    try:
-      subprocess.check_call(['git', '--version'], self.shell)
-      return True
-    except:
-      return False
-
-  def run(self, args, cwd):
-    args.insert(0, self.bin)
-    try:
-      return subprocess.check_output(args, shell=self.shell, cwd=cwd).decode('utf-8').strip()
-    except:
-      return None
+class Git(Bin):
+  def __init__(self) -> None:
+    super().__init__()
+    self.name = 'git'
+    self.help_url = 'https://git-scm.com/downloads'
 
   def root_path(self, cwd):
     dir = os.path.join(cwd, '.git')
@@ -104,8 +91,8 @@ fi
     if not os.path.exists(git_path):
       return modules
     modules.append(GitModule(host, host, git_path, '.', False))
-    try:
-      output = subprocess.check_output(['git', 'submodule'], cwd=host).decode('utf-8')
+    output = self.run(['submodule'], cwd=host)
+    if output:
       for line in output.splitlines():
         arr = line.strip().split(' ')
         if len(arr) > 1:
@@ -116,8 +103,6 @@ fi
             os.path.join(git_path, 'modules', sub),
             os.path.relpath('.', sub).replace('\\', '/'),
             True))
-    except:
-      pass
     return modules
 
   def append_hook_script(self, modules, name, script_file):
@@ -253,10 +238,11 @@ fi
 
 if __name__ == '__main__':
   # test
-  git = Git()
-  git.init()
+  # git = Git()
+  # git.init()
   # print(os.getcwd())
   # print(git.root_path(os.getcwd()))
   # git_path = git.git_path(os.getcwd())
   # git.append_hook(git_path, 'commit-msg', 'scaffold/git-hooks/commit-msg', '.', True)  # scaffold/git-hooks/commit-msg
-  git.run_all_modules('hello', git.root_path(os.getcwd()))
+  # git.run_all_modules('hello', git.root_path(os.getcwd()))
+  pass
