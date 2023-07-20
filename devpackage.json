@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/wequick/devpm/main/devpackage.schema.json",
   "vscodeDependencies": {
     "ms-vscode.cpptools-extension-pack": "",
-    "wequick.cpp-creator": "",
+    "wequick.filegen": "",
     "wequick.coverage-gutters": "",
     "mine.cpplint": ""
   },
