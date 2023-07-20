@@ -144,11 +144,13 @@ fi
         with open(hook_file, 'r', encoding='utf-8') as f:
           needs_update = False
           file_content = ''
+          found = False
           for line in f.readlines():
             index = line.find(exec)
             if index < 0:
               file_content += line
             else:
+              found = True
               hook_added = not '#' in line[:index]
               if hook_added == hook_enabled:
                 if not hook_enabled or script == line.strip():
@@ -161,6 +163,9 @@ fi
                   file_content += script + '\n'
                 else:
                   file_content += '# ' + line
+          if not found and hook_enabled:
+            needs_update = True
+            file_content += script + '\n'
           if needs_update:
             new_file_content = file_content
       result = '%s installed at %s' % (name, os.path.relpath(hook_file, host))
