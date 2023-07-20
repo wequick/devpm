@@ -33,11 +33,11 @@ def create_argument_parser(context) -> tuple[ArgumentParser, dict[str, Command]]
 
 
 def version():
-  try:
-    import pkg_resources
-    return pkg_resources.get_distribution('devpm').version
-  except Exception as e:
-    return ''
+    try:
+        import pkg_resources
+        return pkg_resources.get_distribution('devpm').version
+    except:
+        return ''
 
 
 def main(args = None):

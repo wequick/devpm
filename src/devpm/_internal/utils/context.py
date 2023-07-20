@@ -16,45 +16,45 @@ from devpm._internal.utils.pip import Pip
 
 
 class Context:
-  def __init__(self):
-    self.log = Log()
-    self.code = Code()
-    self.pip = Pip()
-    self.bash = Bash()
-    self.git = Git()
+    def __init__(self):
+        self.log = Log()
+        self.code = Code()
+        self.pip = Pip()
+        self.bash = Bash()
+        self.git = Git()
 
-  def check_install_exe(self, exe, url):
-    installed_ver = None
-    args = [exe, '-h']
-    try:
-      p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-      output, error = p.communicate()
-      if p.returncode != 1:
-        if len(output) == 0:
-          output = error.decode('utf-8')
+    def check_install_exe(self, exe, url):
+        installed_ver = None
+        args = [exe, '-h']
+        try:
+            p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = p.communicate()
+            if p.returncode != 1:
+                if len(output) == 0:
+                    output = error.decode('utf-8')
+                else:
+                    output = output.decode('utf-8')
+                if len(output) > 0:
+                    lines = output.splitlines()
+                    installed_ver = lines[0]
+        except:
+            pass
+        return installed_ver
+
+    def evaluate(self, exp, cwd):
+        if not exp or exp[0] != '$':
+            return exp
+        index = exp.find(':', 1)
+        if index > 0:
+            func = exp[1:index]
+            args = exp[index+1:]
         else:
-          output = output.decode('utf-8')
-        if len(output) > 0:
-          lines = output.splitlines()
-          installed_ver = lines[0]
-    except:
-      pass
-    return installed_ver
-
-  def evaluate(self, exp, cwd):
-    if not exp or exp[0] != '$':
-      return exp
-    index = exp.find(':', 1)
-    if index > 0:
-      func = exp[1:index]
-      args = exp[index+1:]
-    else:
-      func = exp[1:]
-      args = None
-    if func == 'pip.which':
-      return self.pip.which(args)
-    elif func == 'bash.which':
-      return self.bash.which(args)
-    elif func == 'git.install_pre_commit':
-      return self.git.install_pre_commit(args, cwd)
-    return None
+            func = exp[1:]
+            args = None
+        if func == 'pip.which':
+            return self.pip.which(args)
+        elif func == 'bash.which':
+            return self.bash.which(args)
+        elif func == 'git.install_pre_commit':
+            return self.git.install_pre_commit(args, cwd)
+        return None

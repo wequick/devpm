@@ -8,25 +8,25 @@
 # Common log
 
 class Log:
-  def __init__(self):
-    pass
+    def __init__(self):
+        pass
 
-  def abort(self, msg):
-    print('')
-    print(' [!] Error: %s' % (msg))
-    print('')
-    exit(1)
+    def abort(self, msg):
+        print('')
+        print(' [!] Error: %s' % (msg))
+        print('')
+        exit(1)
 
-  def warn(self, msg):
-    print('')
-    print(' [!] Warn: %s' % (msg))
-    print('')
+    def warn(self, msg):
+        print('')
+        print(' [!] Warn: %s' % (msg))
+        print('')
 
-  def info(self, msg):
-    print('')
-    print(' [!] %s' % (msg))
-    print('')
+    def info(self, msg):
+        print('')
+        print(' [!] %s' % (msg))
+        print('')
 
-  def h1(self, msg):
-    print('')
-    print('==== %s ====' % (msg))
+    def h1(self, msg):
+        print('')
+        print('==== %s ====' % (msg))
