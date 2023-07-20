@@ -1,6 +1,6 @@
 # 1.0.4 (2023-07-20)
 ## fix
-* 
+* commit-msg hook - ensure add DEVPME script
 
 # 1.0.3 (2023-07-20)
 ## refactor
