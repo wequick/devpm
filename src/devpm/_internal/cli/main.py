@@ -8,8 +8,10 @@
 from argparse import ArgumentParser
 import os
 import sys
+from devpm._internal.cli.base_command import Command
+from devpm._internal.commands import commands_dict, create_command
 
-def create_argument_parser():
+def create_argument_parser(context) -> tuple[ArgumentParser, dict[str, Command]]:
     """Create the argument parser."""
 
     parser = ArgumentParser(add_help=False)
@@ -20,11 +22,14 @@ def create_argument_parser():
     parser.add_argument('-h', '--help', action="help")
     parser.add_argument('-v', '--version', dest='version', action="store_true", default=False)
 
+    commands = {}
     subparsers = parser.add_subparsers(dest='command', help='commands')
-    command_parser = subparsers.add_parser('install', help='install packages by devpackage.json')
-    command_parser.usage = 'devpm install [options]'
+    for k in commands_dict:
+       command = create_command(context, k)
+       command.create_parser(subparsers)
+       commands[k] = command
 
-    return parser
+    return parser, commands
 
 
 def version():
@@ -36,7 +41,9 @@ def version():
 
 
 def main(args = None):
-    parser = create_argument_parser()
+    from devpm._internal.utils.context import Context
+    context = Context()
+    parser, commands = create_argument_parser(context)
     parser.version = 'devpm ' + version()
     options = parser.parse_args(args)
     if options.version:
@@ -45,11 +52,7 @@ def main(args = None):
         sys.exit()
     if not options.command:
         options.command = 'install'
-    from devpm._internal.commands import create_command
-    from devpm._internal.utils.context import Context
-    context = Context()
-    command = create_command(context, options.command)
-    command.main(args)
+    commands[options.command].main(args)
 
 
 if __name__ == '__main__':

@@ -24,7 +24,7 @@ CommandInfo = namedtuple("CommandInfo", "summary")
 # prefix, the full path makes testing easier (specifically when modifying
 # `commands_dict` in test setup / teardown).
 commands_dict: Dict[str, CommandInfo] = {
-    "install": CommandInfo("Install packages."),
+    "install": CommandInfo("Install packages from devpackage.json."),
     "cr": CommandInfo("Create a Code Review."),
     "pr": CommandInfo("Create a Pull Request.")
 }

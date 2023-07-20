@@ -61,10 +61,13 @@ class Bin:
                 self.version = subprocess.check_output(args).decode('utf-8')
             self.abort()
 
-    def run(self, args, cwd=None) -> str | None:
+    def run(self, args, cwd=None, echo_only=False) -> str | None:
         self.check_bin()
         args.insert(0, self.bin)
         try:
+            if echo_only:
+                print(f"> {' '.join(args)}")
+                return None
             return subprocess.check_output(args, shell=self.shell, cwd=cwd).decode('utf-8').strip()
         except:
             return None
