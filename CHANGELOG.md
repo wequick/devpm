@@ -1,3 +1,9 @@
+# 1.0.3 (2023-07-20)
+## refactor
+* rename SCFEXE to DEVPME
+## docs
+* rename wequick.cpp-creator to wequick.filegen
+
 # 1.0.2 (2023-07-17)
 ## fix
 * copy hook args for pre-commit-config.yaml
