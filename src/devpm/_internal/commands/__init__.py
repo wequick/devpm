@@ -14,7 +14,7 @@ from typing import Any, Dict, Optional
 from devpm._internal.cli.base_command import Command
 from devpm._internal.utils.context import Context
 
-CommandInfo = namedtuple("CommandInfo", "module_path, class_name, summary")
+CommandInfo = namedtuple("CommandInfo", "summary")
 
 # This dictionary does a bunch of heavy lifting for help output:
 # - Enables avoiding additional (costly) imports for presenting `--help`.
@@ -24,11 +24,9 @@ CommandInfo = namedtuple("CommandInfo", "module_path, class_name, summary")
 # prefix, the full path makes testing easier (specifically when modifying
 # `commands_dict` in test setup / teardown).
 commands_dict: Dict[str, CommandInfo] = {
-  "install": CommandInfo(
-    "devpm._internal.commands.install",
-    "InstallCommand",
-    "Install packages.",
-  )
+    "install": CommandInfo("Install packages."),
+    "cr": CommandInfo("Create a Code Review."),
+    "pr": CommandInfo("Create a Pull Request.")
 }
 
 
@@ -36,10 +34,13 @@ def create_command(context: Context, name: str, **kwargs: Any) -> Command:
     """
     Create an instance of the Command class with the given name.
     """
-    module_path, class_name, summary = commands_dict[name]
+    summary = commands_dict[name]
+    module_path = f'devpm._internal.commands.{name}'
+    class_name = f'{name.capitalize()}Command'
     module = importlib.import_module(module_path)
     command_class = getattr(module, class_name)
-    command = command_class(context=context, name=name, summary=summary, **kwargs)
+    command = command_class(context=context, name=name,
+                            summary=summary, **kwargs)
 
     return command
 
