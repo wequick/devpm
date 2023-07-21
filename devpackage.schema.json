@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "JSON schema for NPM package.json files",
+  "title": "JSON schema for devpm package.json files",
   "definitions": {
     "vscodeDependency": {
       "description": "Packages installed by visutal studio code. Key for vscode extension id, value for version. Version definitions: ''(empty) - install when not exists; 'latest' - uninstall and install latest, '1.0.0'(specified) - install when version mismatched.",
@@ -120,6 +120,41 @@
           }
         }
       }
+    },
+    "scriptsInstallAfter": {
+      "description": "Run AFTER the package is installed.",
+      "type": "string",
+      "x-intellij-language-injection": "Shell Script"
+    },
+    "scriptsRestart": {
+      "description": "Run by the 'devpm restart' command. Note: 'devpm restart' will run the stop and start scripts if no restart script is provided.",
+      "type": "string",
+      "x-intellij-language-injection": "Shell Script"
+    },
+    "scriptsStart": {
+      "description": "Run by the 'devpm start' command.",
+      "type": "string",
+      "x-intellij-language-injection": "Shell Script"
+    },
+    "scriptsStop": {
+      "description": "Run by the 'devpm stop' command.",
+      "type": "string",
+      "x-intellij-language-injection": "Shell Script"
+    },
+    "scriptsTest": {
+      "description": "Run by the 'devpm test' command.",
+      "type": "string",
+      "x-intellij-language-injection": "Shell Script"
+    },
+    "scriptsUninstallBefore": {
+      "description": "Run BEFORE the package is uninstalled.",
+      "type": "string",
+      "x-intellij-language-injection": "Shell Script"
+    },
+    "scriptsVersionBefore": {
+      "description": "Run BEFORE bump the package version.",
+      "type": "string",
+      "x-intellij-language-injection": "Shell Script"
     }
   },
   "type": "object",
@@ -138,6 +173,91 @@
     },
     "gitHooks": {
       "$ref": "#/definitions/gitHook"
+    },
+    "scripts": {
+      "description": "The 'scripts' member is an object hash of script commands that are run at various times in the lifecycle of your package. The key is the lifecycle event, and the value is the command to run at that point.",
+      "type": "object",
+      "properties": {
+        "lint": {
+          "type": "string",
+          "description": "Run code quality tools, e.g. cpplint, ESLint, TSLint, etc."
+        },
+        "preversion": {
+          "$ref": "#/definitions/scriptsVersionBefore"
+        },
+        "version": {
+          "$ref": "#/definitions/scriptsVersionBefore"
+        },
+        "postversion": {
+          "type": "string",
+          "description": "Run AFTER bump the package version."
+        },
+        "preinstall": {
+          "type": "string",
+          "description": "Run BEFORE the package is installed."
+        },
+        "install": {
+          "$ref": "#/definitions/scriptsInstallAfter"
+        },
+        "postinstall": {
+          "$ref": "#/definitions/scriptsInstallAfter"
+        },
+        "preuninstall": {
+          "$ref": "#/definitions/scriptsUninstallBefore"
+        },
+        "uninstall": {
+          "$ref": "#/definitions/scriptsUninstallBefore"
+        },
+        "postuninstall": {
+          "type": "string",
+          "description": "Run AFTER the package is uninstalled."
+        },
+        "pretest": {
+          "$ref": "#/definitions/scriptsTest"
+        },
+        "test": {
+          "$ref": "#/definitions/scriptsTest"
+        },
+        "posttest": {
+          "$ref": "#/definitions/scriptsTest"
+        },
+        "prestop": {
+          "$ref": "#/definitions/scriptsStop"
+        },
+        "stop": {
+          "$ref": "#/definitions/scriptsStop"
+        },
+        "poststop": {
+          "$ref": "#/definitions/scriptsStop"
+        },
+        "prestart": {
+          "$ref": "#/definitions/scriptsStart"
+        },
+        "start": {
+          "$ref": "#/definitions/scriptsStart"
+        },
+        "poststart": {
+          "$ref": "#/definitions/scriptsStart"
+        },
+        "prerestart": {
+          "$ref": "#/definitions/scriptsRestart"
+        },
+        "restart": {
+          "$ref": "#/definitions/scriptsRestart"
+        },
+        "postrestart": {
+          "$ref": "#/definitions/scriptsRestart"
+        },
+        "serve": {
+          "type": "string",
+          "description": "Start dev server to serve application files"
+        }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "tsType": "string | undefined",
+        "x-intellij-language-injection": "Shell Script"
+      }
     }
   }
 }
