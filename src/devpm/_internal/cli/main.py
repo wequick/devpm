@@ -50,6 +50,9 @@ def main(args = None):
         sys.stdout.write(parser.version)
         sys.stdout.write(os.linesep)
         sys.exit()
+    if not options.command:
+        parser.print_help()
+        sys.exit(1)
     command = commands[options.command]
     command.options = options
     command_args = sys.argv[1:]
