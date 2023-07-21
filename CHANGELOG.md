@@ -1,3 +1,8 @@
+# 1.1.0 (2023-07-21)
+## feat
+* support command pr/cr/run/lint/test/start/stop/restart/version
+* support run scripts in devpackage.json
+
 # 1.0.4 (2023-07-20)
 ## fix
 * commit-msg hook - ensure add DEVPME script
