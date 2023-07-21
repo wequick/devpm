@@ -19,4 +19,6 @@ class RunCommand(BaseRunCommand):
 
 
     def run(self, args=None):
+        if args:
+            args = args[1:]
         self.run_script_group(self.options.script, args)

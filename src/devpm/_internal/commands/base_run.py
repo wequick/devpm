@@ -14,6 +14,8 @@ from devpm._internal.cli.base_command import Command
 
 class BaseRunCommand(Command):
     def run(self, args=None):
+        if args:
+            args = args[1:]
         self.run_script_group(self.name, args)
 
 
