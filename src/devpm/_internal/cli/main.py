@@ -21,6 +21,7 @@ def create_argument_parser(context) -> tuple[ArgumentParser, dict[str, Command]]
 
     parser.add_argument('-h', '--help', action="help")
     parser.add_argument('-v', '--version', dest='version', action="store_true", default=False)
+    parser.add_argument('-r', '--root', dest='root', help='The dirname for devpackage.json')
 
     commands = {}
     subparsers = parser.add_subparsers(dest='command', help='commands')
@@ -53,6 +54,8 @@ def main(args = None):
     if not options.command:
         parser.print_help()
         sys.exit(1)
+    if options.root:
+        context.cwd = options.root
     command = commands[options.command]
     command.options = options
     command_args = sys.argv[1:]

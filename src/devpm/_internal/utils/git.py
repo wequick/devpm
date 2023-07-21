@@ -62,20 +62,13 @@ fi
         t = hook['type'] if 'type' in hook else None
         if not t:
             return
-        available_types = ['exec', 'regexp', 'pre-commit']
+        available_types = ['regexp', 'pre-commit']
         if not t in available_types:
             return
-        
+
         modules = self.get_modules(root_path)
-        if t == 'exec':
-            self.append_hook_script(modules, name, hook['bin'])
-        elif t == 'regexp':
-            # write git-hook file
-            if not 'pattern' in hook or not 'tips' in hook:
-                print('    pattern, tips required for regexp mode.')
-                return
-            script_bin = self.create_regexp_hook_script(root_path, name, hook['pattern'], hook['tips'])
-            return self.append_hook_script(modules, name, script_bin)
+        if t == 'regexp':
+            self.append_hook_script(modules, name)
         elif t == 'pre-commit':
             self.install_pre_commit(modules, hook['repos'], root_path)
 
@@ -105,20 +98,15 @@ fi
                         True))
         return modules
 
-    def append_hook_script(self, modules, name, script_file):
-        hook_enabled = len(script_file) > 0
-        if hook_enabled:
-            if not os.path.exists(script_file):
-                print('script file not exists: %s' % script_file)
-                return
-        self.make_exec(script_file)
+    def append_hook_script(self, modules, name):
+        hook_enabled = True
         for module in modules:
             hook_path = os.path.join(module.git_path, 'hooks')
-            self.append_hook_script_sub(hook_enabled, module.host_root_path, hook_path, name, module.rel_path + '/' + script_file)
+            self.append_hook_script_sub(hook_enabled, module.host_root_path, hook_path, name, module.rel_path)
 
-    def append_hook_script_sub(self, hook_enabled, host, hook_path, name, bin):
-        exec = 'DEVPME=exec;$DEVPME'
-        script = '%s %s $1' % (exec, bin)
+    def append_hook_script_sub(self, hook_enabled, host, hook_path, name, root):
+        devpm = 'exec devpm'
+        script = f'{devpm} --root {root} githook {name} "$@"'
         if os.path.exists(hook_path):
             hook_file = os.path.join(hook_path, name)
             new_file_content = None
@@ -131,7 +119,7 @@ fi
                     file_content = ''
                     found = False
                     for line in f.readlines():
-                        index = line.find(exec)
+                        index = line.find(devpm)
                         if index < 0:
                             file_content += line
                         else:

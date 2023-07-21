@@ -34,6 +34,7 @@ commands_dict: Dict[str, CommandInfo] = {
     "stop": CommandInfo("Run stop script in devpackage.json."),
     "restart": CommandInfo("Run restart script in devpackage.json."),
     "version": CommandInfo("Bump a package version and auto-gen CHANGELOG."),
+    "githook": CommandInfo("Run git hook."),
 }
 
 

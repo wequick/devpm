@@ -29,8 +29,7 @@ class Context:
     def load_config(self) -> dict:
         config_file = os.path.join(self.cwd, 'devpackage.json')
         if not os.path.exists(config_file):
-            print('devpackage.json no found.')
-            exit(1)
+            self.log.abort('devpackage.json no found.')
         config = {}
         with open(config_file, 'r', encoding='utf-8') as file:
             config = json.load(file)
