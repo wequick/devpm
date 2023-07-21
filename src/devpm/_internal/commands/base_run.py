@@ -45,5 +45,5 @@ class BaseRunCommand(Command):
         if name in scripts:
             script = scripts[name]
             if args:
-                scripts += ' ' + ' '.join(args)
+                script += ' ' + ' '.join(args)
             os.system(script)
