@@ -9,6 +9,17 @@ Development package manager
   - pythonDependencies for python modules
   - bashDependencies for custom bash script
   - gitHooks for add git hooks like `pre-commit`, `commit-msg`
+* devpm pr - Create a Pull Request
+* devpm cr - Create a Code Review, same to `devpm pr`
+* devpm run [NAME] - Run [NAME] script in devpackage.json
+* devpm lint - Run lint script in devpackage.json. Equal to `devpm run lint`
+* devpm test - Run test script in devpackage.json. Equal to `devpm run test`
+* devpm start - Run start script in devpackage.json. Equal to `devpm run start`
+* devpm stop - Run stop script in devpackage.json. Equal to `devpm run stop`
+* devpm restart - Run restart script in devpackage.json. Equal to `devpm run restart`
+* devpm version - Bump a package version and auto-gen CHANGELOG. (not yet finished)
+
+`devpm --help` for more details.
 
 ## devpackage.json
 
