@@ -4,7 +4,8 @@
     "ms-vscode.cpptools-extension-pack": "",
     "wequick.filegen": "",
     "wequick.coverage-gutters": "",
-    "mine.cpplint": ""
+    "mine.cpplint": "",
+    "ms-python.pylint": ""
   },
   "vscodeUserSettings": {
     "cpplint.cpplintPath": "$pip.which:cpplint",
@@ -68,5 +69,11 @@
         }
       ]
     }
+  },
+  "scripts": {
+    "prestart": "echo prestart",
+    "start": "echo prestart",
+    "poststart": "echo poststart",
+    "version": "devpm --version"
   }
 }
