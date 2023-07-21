@@ -44,7 +44,7 @@ class Bin:
         args = self.version_args
         args.insert(0, self.name)
         try:
-            self.version = subprocess.check_output(args).decode('utf-8')
+            self.version = subprocess.check_output(args, shell=self.shell).decode('utf-8')
             self.err = self.verify_version(self.version)
             if self.err:
                 self.abort()
@@ -58,7 +58,7 @@ class Bin:
             else:
                 args = self.version_args
                 args.insert(0, self.bin)
-                self.version = subprocess.check_output(args).decode('utf-8')
+                self.version = subprocess.check_output(args, shell=self.shell).decode('utf-8')
             self.abort()
 
     def run(self, args, cwd=None, echo_only=False) -> str | None:
