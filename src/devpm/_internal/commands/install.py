@@ -17,16 +17,8 @@ import json
 
 class InstallCommand(Command):
     def run(self, args=None):
-        cwd = os.getcwd()
-        config_file = os.path.join(cwd, 'devpackage.json')
-        if not os.path.exists(config_file):
-            sys.stdout.write('devpackage.json no found.')
-            sys.exit(1)
-        sys.stdout.write('Install from %s\n' % config_file)
-        config = {}
-        with open(config_file, 'r', encoding='utf-8') as f:
-            config = json.load(f)
-        
+        config = self.context.load_config()
+
         context = self.context
         vscode_dependencies = config['vscodeDependencies']
         python_dependencies = config['pythonDependencies']

@@ -7,7 +7,7 @@
 
 # Base command
 
-from argparse import _SubParsersAction, ArgumentParser
+from argparse import _SubParsersAction, ArgumentParser, Namespace
 from devpm._internal.utils.context import Context
 
 
@@ -16,17 +16,28 @@ class Command:
         self.context = context
         self.name = name
         self.summary = summary
+        self.parser: ArgumentParser | None = None
+        self.options: Namespace = Namespace()
+
 
     def add_parser(self, parser: ArgumentParser):
         pass
 
+
     def create_parser(self, subparsers: _SubParsersAction):
-        parser = subparsers.add_parser(self.name, help=self.summary)
-        parser.usage = f'devpm {self.name} [options]'
-        self.add_parser(parser)
+        self.parser = subparsers.add_parser(self.name, help=self.summary)
+        self.parser.usage = f'devpm {self.name} [options]'
+        self.add_parser(self.parser)
+
+
+    def parse_args(self, args) -> None:
+        # self.options = self.parser.parse_args(args)
+        pass
+
 
     def run(self, args=None):
         pass
+
 
     def main(self, args=None):
         self.run(args)

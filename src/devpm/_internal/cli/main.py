@@ -25,9 +25,9 @@ def create_argument_parser(context) -> tuple[ArgumentParser, dict[str, Command]]
     commands = {}
     subparsers = parser.add_subparsers(dest='command', help='commands')
     for k in commands_dict:
-       command = create_command(context, k)
-       command.create_parser(subparsers)
-       commands[k] = command
+        command = create_command(context, k)
+        command.create_parser(subparsers)
+        commands[k] = command
 
     return parser, commands
 
@@ -50,9 +50,11 @@ def main(args = None):
         sys.stdout.write(parser.version)
         sys.stdout.write(os.linesep)
         sys.exit()
-    if not options.command:
-        options.command = 'install'
-    commands[options.command].main(args)
+    command = commands[options.command]
+    command.options = options
+    command_args = sys.argv[1:]
+    command.parse_args(command_args)
+    commands[options.command].main(command_args)
 
 
 if __name__ == '__main__':

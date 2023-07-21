@@ -7,6 +7,8 @@
 
 # System context manager
 
+import json
+import os
 import subprocess
 from devpm._internal.utils.git import Git
 from devpm._internal.utils.bash import Bash
@@ -17,11 +19,22 @@ from devpm._internal.utils.pip import Pip
 
 class Context:
     def __init__(self):
+        self.cwd = os.getcwd()
         self.log = Log()
         self.code = Code()
         self.pip = Pip()
         self.bash = Bash()
         self.git = Git()
+
+    def load_config(self) -> dict:
+        config_file = os.path.join(self.cwd, 'devpackage.json')
+        if not os.path.exists(config_file):
+            print('devpackage.json no found.')
+            exit(1)
+        config = {}
+        with open(config_file, 'r', encoding='utf-8') as file:
+            config = json.load(file)
+        return config
 
     def check_install_exe(self, exe, url):
         installed_ver = None
@@ -55,6 +68,4 @@ class Context:
             return self.pip.which(args)
         elif func == 'bash.which':
             return self.bash.which(args)
-        elif func == 'git.install_pre_commit':
-            return self.git.install_pre_commit(args, cwd)
         return None

@@ -25,8 +25,15 @@ CommandInfo = namedtuple("CommandInfo", "summary")
 # `commands_dict` in test setup / teardown).
 commands_dict: Dict[str, CommandInfo] = {
     "install": CommandInfo("Install packages from devpackage.json."),
-    "cr": CommandInfo("Create a Code Review."),
-    "pr": CommandInfo("Create a Pull Request.")
+    "pr": CommandInfo("Create a Pull Request."),
+    "cr": CommandInfo("Create a Code Review, same to pr."),
+    "run": CommandInfo("Run [NAME] script in devpackage.json."),
+    "lint": CommandInfo("Run lint script in devpackage.json."),
+    "test": CommandInfo("Run test script in devpackage.json."),
+    "start": CommandInfo("Run start script in devpackage.json."),
+    "stop": CommandInfo("Run stop script in devpackage.json."),
+    "restart": CommandInfo("Run restart script in devpackage.json."),
+    "version": CommandInfo("Bump a package version and auto-gen CHANGELOG."),
 }
 
 
@@ -34,7 +41,7 @@ def create_command(context: Context, name: str, **kwargs: Any) -> Command:
     """
     Create an instance of the Command class with the given name.
     """
-    summary = commands_dict[name]
+    summary, = commands_dict[name]
     module_path = f'devpm._internal.commands.{name}'
     class_name = f'{name.capitalize()}Command'
     module = importlib.import_module(module_path)
