@@ -29,7 +29,10 @@
   "gitHooks": {
     "commit-msg": {
       "type": "regexp",
-      "pattern": "^[feat|fix|refactor|chore|test|style|docs]",
+      "pattern": [
+        "^(feat|fix|refactor|chore|test|style|docs)",
+        "^(Merge)"
+      ],
       "tips": [
         "Invalid commit message style, please format as following:",
         "  fix: some msg",

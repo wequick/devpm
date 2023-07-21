@@ -90,8 +90,11 @@
               "description": "The hook type, regexp for regular expression"
             },
             "pattern": {
-              "type": "string",
-              "description": "The pattern for type regexp"
+              "description": "The pattern(s) to match the commit-msg",
+              "oneOf":[
+                {"type": "string", "format": "regex"},
+                {"type": "array", "items": {"type": "string", "format": "regex"}}
+              ]
             },
             "tips": {
               "description": "The tips to show when the commit-msg test failed, used array to show multi-line.",

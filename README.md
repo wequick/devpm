@@ -65,9 +65,10 @@ Write to git hooks for root project and it's git submodules. Support commit-msg,
   "$schema": "https://raw.githubusercontent.com/wequick/devpm/main/devpackage.schema.json",
   "vscodeDependencies": {
     "ms-vscode.cpptools-extension-pack": "",
-    "wequick.cpp-creator": "",
+    "wequick.filegen": "",
     "wequick.coverage-gutters": "",
-    "mine.cpplint": ""
+    "mine.cpplint": "",
+    "ms-python.pylint": ""
   },
   "vscodeUserSettings": {
     "cpplint.cpplintPath": "$pip.which:cpplint",
@@ -91,7 +92,10 @@ Write to git hooks for root project and it's git submodules. Support commit-msg,
   "gitHooks": {
     "commit-msg": {
       "type": "regexp",
-      "pattern": "^[feat|fix|refactor|chore|test|style|docs]",
+      "pattern": [
+        "^(feat|fix|refactor|chore|test|style|docs)",
+        "^(Merge)"
+      ],
       "tips": [
         "Invalid commit message style, please format as following:",
         "  fix: some msg",
@@ -118,11 +122,25 @@ Write to git hooks for root project and it's git submodules. Support commit-msg,
           "rev": "v1.3.5",
           "hooks": [
             { "id": "cpplint" },
-            { "id": "cppcheck" }
+            {
+              "id": "cppcheck",
+              "args": [
+                "--suppress=missingInclude",
+                "--suppress=missingIncludeSystem",
+                "--std=c++14",
+                "--force"
+              ]
+            }
           ]
         }
       ]
     }
+  },
+  "scripts": {
+    "prestart": "echo prestart",
+    "start": "echo prestart",
+    "poststart": "echo poststart",
+    "version": "devpm --version"
   }
 }
 ```
