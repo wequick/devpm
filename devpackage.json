@@ -31,7 +31,8 @@
       "type": "regexp",
       "pattern": [
         "^(feat|fix|refactor|chore|test|style|docs)",
-        "^(Merge)"
+        "^(Merge)",
+        "^\\d+\\.\\d+\\.\\d+$"
       ],
       "tips": [
         "Invalid commit message style, please format as following:",
