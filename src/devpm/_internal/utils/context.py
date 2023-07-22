@@ -10,6 +10,7 @@
 import json
 import os
 import subprocess
+import sys
 from devpm._internal.utils.git import Git
 from devpm._internal.utils.bash import Bash
 from devpm._internal.utils.log import Log
@@ -27,12 +28,23 @@ class Context:
         self.git = Git()
 
     def load_config(self) -> dict:
-        config_file = os.path.join(self.cwd, 'devpackage.json')
-        if not os.path.exists(config_file):
-            self.log.abort('devpackage.json no found.')
         config = {}
-        with open(config_file, 'r', encoding='utf-8') as file:
-            config = json.load(file)
+        if not sys.stdin.isatty():
+            # Read from stdin
+            s = ''
+            for line in sys.stdin:
+                s += line.strip()
+            try:
+                config = json.loads(s)
+            except:
+                self.log.abort('Invalid config data')
+        else:
+            # Read from file
+            config_file = os.path.join(self.cwd, 'devpackage.json')
+            if not os.path.exists(config_file):
+                self.log.abort('devpackage.json no found.')
+            with open(config_file, 'r', encoding='utf-8') as file:
+                config = json.load(file)
         return config
 
     def check_install_exe(self, exe, url):
