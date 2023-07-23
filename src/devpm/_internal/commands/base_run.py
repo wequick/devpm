@@ -27,8 +27,9 @@ class BaseRunCommand(Command):
         exit(1)
 
 
-    def run_script_group(self, name: str | None, args=None) -> None:
-        config = self.context.load_config()
+    def run_script_group(self, name: str | None, args=None, config: dict={}) -> None:
+        if not config:
+            config = self.context.load_config()
         scripts = {}
         if 'scripts' in config:
             scripts = config['scripts']
@@ -38,14 +39,19 @@ class BaseRunCommand(Command):
         if not name in scripts:
             print(f"Missing script \"{name}\".\n")
             self.show_scripts(scripts)
-        self.run_script(f"pre{name}", scripts, args)
-        self.run_script(name, scripts, args)
-        self.run_script(f"post{name}", scripts, args)
+        self.run_script(f"pre{name}", scripts, config, args)
+        ret = self.run_script(name, scripts, config, args)
+        if ret != 0:
+            exit(ret)
+        self.run_script(f"post{name}", scripts, config, args)
 
 
-    def run_script(self, name: str, scripts: list[str], args=None) -> None:
+    def run_script(self, name: str, scripts: dict, config: dict={}, args=None) -> int:
         if name in scripts:
-            script = scripts[name]
+            script = self.context.evaluate(scripts[name], config)
             if args:
                 script += ' ' + ' '.join(args)
-            os.system(script)
+            print(f"> {name}")
+            print(f"> {script}")
+            return os.system(script)
+        return 0

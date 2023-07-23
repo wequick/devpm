@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 <!-- insertion marker -->
 ## [1.1.1](https://github.com/wequick/devpm/releases/tag/1.1.1) - 2023-07-22
 
-<small>[Compare with 1.0.4](https://github.com/wequick/devpm/compare/1.0.4...1.1.0)</small>
+<small>[Compare with 1.0.4](https://github.com/wequick/devpm/compare/1.0.4...1.1.1)</small>
 
 ### Features
 
@@ -53,3 +53,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Code Refactoring
 
 - rename SCFEXE to DEVPME ([38913a3](https://github.com/wequick/devpm/commit/38913a3832781a206621ba9d5b556030873c880e) by Galen Lin).
+

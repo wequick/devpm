@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "JSON schema for devpm package.json files",
+  "title": "JSON schema for devpm devpackage.json files",
   "definitions": {
     "vscodeDependency": {
       "description": "Packages installed by visutal studio code. Key for vscode extension id, value for version. Version definitions: ''(empty) - install when not exists; 'latest' - uninstall and install latest, '1.0.0'(specified) - install when version mismatched.",
@@ -162,6 +162,16 @@
   },
   "type": "object",
   "properties": {
+    "version": {
+      "description": "Version used for `devpm version` auto increasement.",
+      "type": "string"
+    },
+    "versionLoader": {
+      "type": "object",
+      "properties": {
+        
+      }
+    },
     "vscodeDependencies": {
       "$ref": "#/definitions/vscodeDependency"
     },

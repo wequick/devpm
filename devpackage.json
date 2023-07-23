@@ -1,5 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/wequick/devpm/main/devpackage.schema.json",
+  "version": "1.1.1",
   "vscodeDependencies": {
     "ms-vscode.cpptools-extension-pack": "",
     "wequick.filegen": "",
@@ -14,7 +15,9 @@
   "pythonDependencies": {
     "gcovr": "4.2",
     "cpplint": "1.6.1",
-    "pre-commit": "3.3.3"
+    "pre-commit": "3.3.3",
+    "git-changelog": "2.0.0",
+    "toml": "0.10.2"
   },
   "bashDependencies": {
     "OpenCppCoverage": {
@@ -59,7 +62,9 @@
           "repo": "https://github.com/pocc/pre-commit-hooks",
           "rev": "v1.3.5",
           "hooks": [
-            { "id": "cpplint" },
+            {
+              "id": "cpplint"
+            },
             {
               "id": "cppcheck",
               "args": [
@@ -78,6 +83,8 @@
     "prestart": "echo prestart",
     "start": "echo prestart",
     "poststart": "echo poststart",
-    "version": "devpm --version"
+    "preversion": "echo preversion $devpackage.version",
+    "version": "python example/version.py $devpackage.version",
+    "postversion": "echo postversion $devpackage.version"
   }
 }
