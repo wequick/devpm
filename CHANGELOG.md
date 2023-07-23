@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [1.2.0](https://github.com/wequick/devpm/releases/tag/1.2.0) - 2023-07-24
+
+<small>[Compare with 1.1.1](https://github.com/wequick/devpm/compare/1.1.1...1.2.0)</small>
+
+### Features
+
+- support 'version' command ([c976605](https://github.com/wequick/devpm/commit/c97660545eda34972b556528339a4027e2472cb2) by Galen Lin).
+
 ## [1.1.1](https://github.com/wequick/devpm/releases/tag/1.1.1) - 2023-07-22
 
 <small>[Compare with 1.0.4](https://github.com/wequick/devpm/compare/1.0.4...1.1.1)</small>
@@ -53,4 +61,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Code Refactoring
 
 - rename SCFEXE to DEVPME ([38913a3](https://github.com/wequick/devpm/commit/38913a3832781a206621ba9d5b556030873c880e) by Galen Lin).
-

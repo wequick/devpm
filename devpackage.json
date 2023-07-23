@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/wequick/devpm/main/devpackage.schema.json",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "vscodeDependencies": {
     "ms-vscode.cpptools-extension-pack": "",
     "wequick.filegen": "",
